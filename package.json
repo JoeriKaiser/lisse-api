@@ -1,0 +1,15 @@
+{
+  "name": "lisse-api",
+  "module": "index.ts",
+  "type": "module",
+  "devDependencies": {
+    "@types/bun": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  },
+  "dependencies": {
+    "@types/koa": "^2.15.0",
+    "koa": "^2.15.3"
+  }
+}
