@@ -1,76 +1,67 @@
-import {
-  pgTable,
-  serial,
-  text,
-  timestamp,
-  integer,
-  uniqueIndex,
-} from "drizzle-orm/pg-core";
-import { relations } from "drizzle-orm";
+import { pgTable, serial, text, timestamp, integer, uniqueIndex } from 'drizzle-orm/pg-core';
+import { relations } from 'drizzle-orm';
 
-export const organizations = pgTable("organizations", {
-  id: serial("id").primaryKey(),
-  name: text("name").notNull(),
-  createdAt: timestamp("created_at").defaultNow().notNull(),
-  updatedAt: timestamp("updated_at").defaultNow().notNull(),
+export const organizations = pgTable('organizations', {
+  id: serial('id').primaryKey(),
+  name: text('name').notNull(),
+  createdAt: timestamp('created_at').defaultNow().notNull(),
+  updatedAt: timestamp('updated_at').defaultNow().notNull(),
 });
 
 export const users = pgTable(
-  "users",
+  'users',
   {
-    id: serial("id").primaryKey(),
-    organizationId: integer("organization_id")
+    id: serial('id').primaryKey(),
+    organizationId: integer('organization_id')
       .notNull()
       .references(() => organizations.id),
-    email: text("email").notNull(),
-    hashedPassword: text("hashed_password"),
-    salt: text("salt"),
-    externalAuthId: text("external_auth_id"), // Made optional
-    firstName: text("first_name"),
-    lastName: text("last_name"),
-    role: text("role").default("user"),
-    authProvider: text("auth_provider").default("local"), // New field to distinguish auth method
-    createdAt: timestamp("created_at").defaultNow().notNull(),
-    updatedAt: timestamp("updated_at").defaultNow().notNull(),
+    email: text('email').notNull(),
+    hashedPassword: text('hashed_password'),
+    salt: text('salt'),
+    externalAuthId: text('external_auth_id'), // Made optional
+    firstName: text('first_name'),
+    lastName: text('last_name'),
+    role: text('role').default('user'),
+    authProvider: text('auth_provider').default('local'), // New field to distinguish auth method
+    createdAt: timestamp('created_at').defaultNow().notNull(),
+    updatedAt: timestamp('updated_at').defaultNow().notNull(),
   },
   (table) => {
     return {
-      emailIdx: uniqueIndex("email_idx").on(table.email),
-      externalAuthIdIdx: uniqueIndex("external_auth_id_idx").on(
-        table.externalAuthId
-      ),
+      emailIdx: uniqueIndex('email_idx').on(table.email),
+      externalAuthIdIdx: uniqueIndex('external_auth_id_idx').on(table.externalAuthId),
     };
-  }
+  },
 );
 
-export const scans = pgTable("scans", {
-  id: serial("id").primaryKey(),
-  userId: integer("user_id")
+export const scans = pgTable('scans', {
+  id: serial('id').primaryKey(),
+  userId: integer('user_id')
     .notNull()
     .references(() => users.id),
-  barcode: text("barcode").notNull(),
-  scannedAt: timestamp("scanned_at").defaultNow().notNull(),
-  productName: text("product_name"),
-  productCategory: text("product_category"),
-  notes: text("notes"),
+  barcode: text('barcode').notNull(),
+  scannedAt: timestamp('scanned_at').defaultNow().notNull(),
+  productName: text('product_name'),
+  productCategory: text('product_category'),
+  notes: text('notes'),
 });
 
 export const products = pgTable(
-  "products",
+  'products',
   {
-    id: serial("id").primaryKey(),
-    barcode: text("barcode").notNull(),
-    name: text("name").notNull(),
-    description: text("description"),
-    category: text("category"),
-    createdAt: timestamp("created_at").defaultNow().notNull(),
-    updatedAt: timestamp("updated_at").defaultNow().notNull(),
+    id: serial('id').primaryKey(),
+    barcode: text('barcode').notNull(),
+    name: text('name').notNull(),
+    description: text('description'),
+    category: text('category'),
+    createdAt: timestamp('created_at').defaultNow().notNull(),
+    updatedAt: timestamp('updated_at').defaultNow().notNull(),
   },
   (table) => {
     return {
-      barcodeIdx: uniqueIndex("barcode_idx").on(table.barcode),
+      barcodeIdx: uniqueIndex('barcode_idx').on(table.barcode),
     };
-  }
+  },
 );
 
 export const organizationsRelations = relations(organizations, ({ many }) => ({
