@@ -23,10 +23,13 @@ export const users = pgTable(
       .notNull()
       .references(() => organizations.id),
     email: text("email").notNull(),
-    externalAuthId: text("external_auth_id").notNull(), // Store the ID from the external auth provider
+    hashedPassword: text("hashed_password"),
+    salt: text("salt"),
+    externalAuthId: text("external_auth_id"), // Made optional
     firstName: text("first_name"),
     lastName: text("last_name"),
     role: text("role").default("user"),
+    authProvider: text("auth_provider").default("local"), // New field to distinguish auth method
     createdAt: timestamp("created_at").defaultNow().notNull(),
     updatedAt: timestamp("updated_at").defaultNow().notNull(),
   },
