@@ -3,10 +3,13 @@
   "module": "src/app.ts",
   "scripts": {
     "dev": "nodemon --watch src -e ts,tsx --exec ts-node src/app.ts",
-    "build": "bun build"
+    "build": "bun build",
+    "mi:ge": "bun drizzle-kit generate",
+    "mi:mi": "bunx tsx src/db/migrate.ts"
   },
   "devDependencies": {
-    "@types/bun": "latest"
+    "@types/bun": "latest",
+    "drizzle-kit": "^0.23.0"
   },
   "peerDependencies": {
     "typescript": "^5.0.0"
@@ -15,9 +18,12 @@
     "@koa/bodyparser": "^5.1.1",
     "@koa/cors": "^5.0.0",
     "@koa/router": "^12.0.1",
+    "@neondatabase/serverless": "^0.9.4",
     "@types/koa": "^2.15.0",
     "@types/koa__cors": "^5.0.0",
     "@types/koa__router": "^12.0.4",
+    "dotenv": "^16.4.5",
+    "drizzle-orm": "^0.32.1",
     "koa": "^2.15.3",
     "nodemon": "^3.1.4",
     "ts-node": "^10.9.2"

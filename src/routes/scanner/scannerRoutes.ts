@@ -1,6 +1,8 @@
 import { bodyParser } from "@koa/bodyparser";
 import Router from "@koa/router";
 import type { Context } from "koa";
+import db from "../../db/datasource";
+import { scans } from "../../db/schema";
 
 const router = new Router();
 
@@ -13,10 +15,15 @@ router.get("/", async (ctx: Context) => {
 });
 
 router.post("/scan", async (ctx: Context) => {
-  const request = ctx.request;
-  console.log(request.body);
+  const body = ctx.request.body;
 
-  ctx.body = { message: `Successfully scanned ${request.body.name}` };
+  if (!body.name) {
+    ctx.throw(400, "Name is required");
+  }
+
+  db.insert(scans).values({ userId: 1, barcode: body.name }).execute();
+
+  ctx.body = { message: `Successfully scanned ${body.name}` };
 });
 
 export default router;

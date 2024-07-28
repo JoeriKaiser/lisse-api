@@ -1,0 +1,1 @@
+ALTER TABLE "example_table" RENAME TO "scans";
