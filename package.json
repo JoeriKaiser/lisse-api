@@ -3,7 +3,8 @@
   "module": "src/app.ts",
   "scripts": {
     "dev": "nodemon --watch src -e ts,tsx --exec ts-node src/app.ts",
-    "build": "bun build",
+    "build": "bun build ./src/app.ts --outdir ./dist",
+    "start": "bun run dist/index.js",
     "mi:ge": "bun drizzle-kit generate",
     "mi:mi": "bunx tsx src/db/migrate.ts",
     "lint": "eslint 'src/**/*.{js,ts}"
