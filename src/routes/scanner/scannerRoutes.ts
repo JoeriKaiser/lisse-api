@@ -15,15 +15,29 @@ router.get('/', async (ctx: Context) => {
 });
 
 router.post('/scan', async (ctx: Context) => {
+  // TODO type this
   const body = ctx.request.body;
 
-  if (!body.name) {
-    ctx.throw(400, 'Name is required');
+  if (!body.barcode) {
+    ctx.throw(400, 'Barcode is required');
   }
 
-  db.insert(scans).values({ userId: 1, barcode: body.name }).execute();
+  try {
+    await db
+      .insert(scans)
+      .values({
+        userId: body.userId,
+        barcode: body.barcode,
+        productName: body.productName ? body.productName : null,
+        productCategory: body.productCategory ? body.productCategory : null,
+        notes: body.notes ? body.notes : null,
+      })
+      .execute();
 
-  ctx.body = { message: `Successfully scanned ${body.name}` };
+    ctx.body = { message: `Successfully scanned ${body.name}` };
+  } catch (error) {
+    ctx.throw(500, error as Error);
+  }
 });
 
 export default router;
