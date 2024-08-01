@@ -9,11 +9,9 @@ passport.use(
   new LocalStrategy({ usernameField: 'email' }, async (email, password, done) => {
     try {
       const user = await db.select().from(users).where(eq(users.email, email)).limit(1);
-
       if (!user || user.length === 0) {
         return done(null, false, { message: 'Incorrect email or password.' });
       }
-
       const row = user[0];
 
       const hashedPassword = await new Promise<Buffer>((resolve, reject) => {
@@ -23,7 +21,9 @@ passport.use(
         });
       });
 
-      if (!crypto.timingSafeEqual(Buffer.from(row.hashedPassword!), hashedPassword)) {
+      const storedHash = Buffer.from(row.hashedPassword!, 'hex');
+
+      if (!crypto.timingSafeEqual(storedHash, hashedPassword)) {
         return done(null, false, { message: 'Incorrect email or password.' });
       }
 
@@ -46,3 +46,5 @@ passport.deserializeUser(async (id: number, done) => {
     done(err);
   }
 });
+
+export default passport;
