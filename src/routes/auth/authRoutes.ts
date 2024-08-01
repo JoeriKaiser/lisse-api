@@ -5,6 +5,7 @@ import crypto from 'crypto';
 import db from '../../db/datasource';
 import { eq } from 'drizzle-orm';
 import { users } from '../../db/schema';
+import { Context, Next } from 'koa';
 
 const router = new Router();
 
@@ -54,13 +55,48 @@ router.post('/register', async (ctx) => {
   ctx.body = { message: 'User created successfully', userId: newUser[0].id };
 });
 
-router.post('/login', passport.authenticate('local'), (ctx) => {
-  ctx.body = { message: 'Logged in successfully', user: ctx.state.user };
+router.post('/login', async (ctx, next) => {
+  return passport.authenticate('local', (err, user, info) => {
+    if (err) {
+      ctx.status = 500;
+      ctx.body = { error: err.message };
+      return;
+    }
+    if (!user) {
+      ctx.status = 401;
+      ctx.body = { error: info.message };
+      return;
+    }
+    ctx.login(user);
+    console.log('SESSION', ctx.session);
+    if (ctx.session) {
+      ctx.session.user = user;
+    }
+    ctx.body = { message: 'Login successful', user };
+  })(ctx, next);
 });
 
-router.post('/logout', (ctx) => {
+router.get('/logout', async (ctx) => {
   ctx.logout();
-  ctx.body = { message: 'Logged out successfully' };
+  ctx.session = null;
+  ctx.body = { message: 'Logout successful' };
+});
+
+const isAuthenticated = async (ctx: Context, next: Next) => {
+  if (ctx.isAuthenticated()) {
+    await next();
+  } else {
+    ctx.status = 401;
+    ctx.body = { error: 'Unauthorized' };
+  }
+};
+
+router.get('/current-user', isAuthenticated, async (ctx) => {
+  const user = ctx.state.user;
+
+  const { ...safeUser } = user;
+
+  ctx.body = safeUser;
 });
 
 export default router;
