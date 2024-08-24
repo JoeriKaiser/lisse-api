@@ -68,7 +68,6 @@ router.post('/login', async (ctx, next) => {
       return;
     }
     ctx.login(user);
-    console.log('SESSION', ctx.session);
     if (ctx.session) {
       ctx.session.user = user;
     }
@@ -76,9 +75,9 @@ router.post('/login', async (ctx, next) => {
   })(ctx, next);
 });
 
-router.get('/logout', async (ctx) => {
+router.get('/logout', async (ctx: Context) => {
+  ctx.cookies.set('koa:sess', null);
   ctx.logout();
-  ctx.session = null;
   ctx.body = { message: 'Logout successful' };
 });
 
