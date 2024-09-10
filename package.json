@@ -1,12 +1,13 @@
 {
   "name": "lisse-api",
+  "private": true,
   "module": "src/app.ts",
   "scripts": {
     "dev": "nodemon --watch src -e ts,tsx --exec ts-node src/app.ts",
-    "build": "bun build ./src/app.ts --outdir ./dist",
-    "start": "bun run dist/index.js",
-    "mi:ge": "bun drizzle-kit generate",
-    "mi:mi": "bunx tsx src/db/migrate.ts",
+    "build": "yarn tsc",
+    "start": "node dist/src/app.js",
+    "mi:ge": "yarn drizzle-kit generate",
+    "mi:mi": "npx tsx src/db/migrate.ts",
     "lint": "eslint 'src/**/*.{js,ts}"
   },
   "devDependencies": {
@@ -22,9 +23,9 @@
     "prettier": "^3.3.3"
   },
   "peerDependencies": {
-    "typescript": "^5.0.0"
   },
   "dependencies": {
+    "typescript": "^5.0.0",
     "@koa/bodyparser": "^5.1.1",
     "@koa/cors": "^5.0.0",
     "@koa/router": "^12.0.1",
