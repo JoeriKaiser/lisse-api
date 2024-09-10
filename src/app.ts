@@ -5,8 +5,9 @@ import cors from '@koa/cors';
 import passport from './middleware/passport';
 import { config } from 'dotenv';
 
-// TODO Make dynamic env variables available
-config({ path: '.env.local' });
+const env = process.env.NODE_ENV || 'development';
+
+config({ path: `.env.${env}` });
 
 const app = new Koa();
 
@@ -24,7 +25,7 @@ const CONFIG = {
 app.use(session(CONFIG, app));
 app.use(
   cors({
-    origin: 'http://localhost:5173', //TODO change this to the correct origin
+    origin: process.env.FRONT_URL,
     credentials: true,
   }),
 );

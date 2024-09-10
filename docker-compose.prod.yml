@@ -1,0 +1,8 @@
+services:
+  api:
+    build:
+      target: production
+    volumes:
+      - .:/app
+      - /app/node_modules
+    command: yarn start

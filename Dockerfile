@@ -1,26 +1,26 @@
 # Base stage
-FROM oven/bun:1 AS base
+FROM node:18 AS base
 WORKDIR /app
-COPY package.json bun.lockb ./
+COPY package.json yarn.lock ./
 
 # Development stage
 FROM base AS development
-RUN bun install
+RUN yarn install
 COPY . .
-CMD ["bun", "run", "dev"]
+CMD ["yarn", "run", "dev"]
 
 # Build stage
 FROM base AS build
-RUN bun install --frozen-lockfile
+RUN yarn install --frozen-lockfile
 COPY . .
-RUN bun run build
+RUN yarn run build
 
 # Production stage
-FROM oven/bun:1-alpine AS production
+FROM node:18-alpine AS production
 WORKDIR /app
 COPY --from=build /app/dist ./dist
 COPY --from=build /app/package.json ./
-COPY --from=build /app/bun.lockb ./
-RUN bun install --production --frozen-lockfile
+COPY --from=build /app/yarn.lock ./
+RUN yarn install --production --frozen-lockfile
 EXPOSE 3000
-CMD ["bun", "run", "start"]
+CMD ["yarn", "run", "start"]
