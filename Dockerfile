@@ -22,5 +22,5 @@ COPY --from=build /app/dist ./dist
 COPY --from=build /app/package.json ./
 COPY --from=build /app/yarn.lock ./
 RUN yarn install --production --frozen-lockfile
-EXPOSE 3000
+EXPOSE 8001
 CMD ["yarn", "run", "start"]

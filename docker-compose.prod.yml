@@ -2,6 +2,7 @@ services:
   api:
     build:
       target: production
+    image: jkaiser/lisse-api:latest
     volumes:
       - .:/app
       - /app/node_modules
