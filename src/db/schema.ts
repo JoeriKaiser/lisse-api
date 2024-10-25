@@ -1,4 +1,4 @@
-import { pgTable, serial, text, timestamp, integer, uniqueIndex } from 'drizzle-orm/pg-core';
+import { pgTable, serial, text, boolean, timestamp, integer, uniqueIndex } from 'drizzle-orm/pg-core';
 import { relations } from 'drizzle-orm';
 
 export const organizations = pgTable('organizations', {
@@ -66,6 +66,7 @@ export const products = pgTable(
 
 export const organizationsRelations = relations(organizations, ({ many }) => ({
   users: many(users),
+  endpointConfigurations: many(endpointConfigurations),
 }));
 
 export const usersRelations = relations(users, ({ one, many }) => ({
@@ -89,4 +90,26 @@ export const scansRelations = relations(scans, ({ one }) => ({
 
 export const productsRelations = relations(products, ({ many }) => ({
   scans: many(scans),
+}));
+
+export const endpointConfigurations = pgTable('endpoint_configurations', {
+  id: serial('id').primaryKey(),
+  organizationId: integer('organization_id')
+    .notNull()
+    .references(() => organizations.id),
+  name: text('name').notNull(),
+  url: text('url').notNull(),
+  authMethod: text('auth_method').notNull(),
+  authValue: text('auth_value'),
+  customHeaders: text('custom_headers'),
+  isActive: boolean('is_active').default(true),
+  createdAt: timestamp('created_at').defaultNow().notNull(),
+  updatedAt: timestamp('updated_at').defaultNow().notNull(),
+});
+
+export const endpointConfigurationsRelations = relations(endpointConfigurations, ({ one }) => ({
+  organization: one(organizations, {
+    fields: [endpointConfigurations.organizationId],
+    references: [organizations.id],
+  }),
 }));
