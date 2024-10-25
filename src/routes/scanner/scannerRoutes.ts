@@ -4,7 +4,6 @@ import type { Context } from 'koa';
 import db from '../../db/datasource';
 import { scans } from '../../db/schema';
 import { eq } from 'drizzle-orm';
-import { parse } from 'dotenv';
 
 const router = new Router();
 
@@ -23,7 +22,6 @@ router.get('/scans/:userId', async (ctx: Context) => {
     ctx.throw(400, 'User ID is required');
   }
 
-  console.log(userId);
   try {
     ctx.body = await db
       .select()
