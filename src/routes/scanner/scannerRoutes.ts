@@ -34,7 +34,14 @@ router.get('/scans/:userId', async (ctx: Context) => {
 });
 
 router.post('/scan', async (ctx: Context) => {
-  const body = ctx.request.body;
+  const body = ctx.request.body as {
+    userId: number;
+    name: string;
+    barcode: string;
+    productName?: string;
+    productCategory?: string;
+    notes?: string;
+  };
 
   if (!body.barcode) {
     ctx.throw(400, 'Barcode is required');

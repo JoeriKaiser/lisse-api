@@ -18,8 +18,6 @@ router.get('/:organizationId', async (ctx: Context) => {
     ctx.throw(400, 'Organization ID is required');
   }
 
-  console.log('ORGA', organizationId);
-
   try {
     ctx.body = await db
       .select()
@@ -32,7 +30,13 @@ router.get('/:organizationId', async (ctx: Context) => {
 
 router.post('/', async (ctx: Context) => {
   try {
-    const { name, url, authMethod, authValue, customHeaders } = ctx.request.body;
+    const { name, url, authMethod, authValue, customHeaders } = ctx.request.body as {
+      name: string;
+      url: string;
+      authMethod: string;
+      authValue: string;
+      customHeaders: string;
+    };
     const organizationId = ctx.state.user.organizationId;
 
     const newEndpoint = await db
@@ -58,7 +62,14 @@ router.post('/', async (ctx: Context) => {
 router.put('/:id', async (ctx: Context) => {
   try {
     const { id } = ctx.params;
-    const { name, url, authMethod, authValue, customHeaders, isActive } = ctx.request.body;
+    const { name, url, authMethod, authValue, customHeaders, isActive } = ctx.request.body as {
+      name: string;
+      url: string;
+      authMethod: string;
+      authValue: string;
+      customHeaders: string;
+      isActive: boolean;
+    };
     const organizationId = ctx.state.user.organizationId;
 
     const updatedEndpoint = await db
