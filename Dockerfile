@@ -15,5 +15,5 @@ RUN yarn install --frozen-lockfile
 COPY . .
 RUN yarn run build
 RUN yarn install --production --frozen-lockfile
-EXPOSE 8000
+EXPOSE 8001
 CMD ["yarn", "run", "start"]

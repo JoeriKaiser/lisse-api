@@ -1,9 +1,17 @@
 services:
   api:
     image: jwkaiser/lisse-api:latest
+    container_name: lisse-api
     ports:
-      - 8000:8000
+      - 8001:8001
     volumes:
       - .:/app
       - /app/node_modules
     command: sh -c "yarn install && yarn build && yarn start"
+    restart: unless-stopped
+    networks:
+      - koa-network
+
+networks:
+  koa-network:
+    driver: bridge
