@@ -1,5 +1,5 @@
 import Router from '@koa/router';
-import bodyParser from 'koa-bodyparser';
+import bodyParser from '@koa/bodyparser';
 import { healthCheck } from '../../utils/monitoring';
 import { Context } from 'koa';
 

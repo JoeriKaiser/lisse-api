@@ -3,7 +3,7 @@ import { endpointConfigurations } from '../../db/schema';
 import { and, eq } from 'drizzle-orm';
 import { Context } from 'koa';
 import db from '../../db/datasource';
-import bodyParser from 'koa-bodyparser';
+import bodyParser from '@koa/bodyparser';
 
 const router = new Router();
 
