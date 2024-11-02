@@ -11,10 +11,8 @@
     "lint": "eslint 'src/**/*.{js,ts}"
   },
   "devDependencies": {
-    "@types/bun": "latest",
     "@typescript-eslint/eslint-plugin": "^7.17.0",
     "@typescript-eslint/parser": "^7.17.0",
-    "drizzle-kit": "^0.23.0",
     "eslint": "^9.8.0",
     "eslint-config-koa": "^2.0.2",
     "eslint-config-prettier": "^9.1.0",
@@ -23,6 +21,8 @@
     "prettier": "^3.3.3"
   },
   "dependencies": {
+    "@types/bun": "latest",
+    "drizzle-kit": "^0.23.0",
     "typescript": "^5.0.0",
     "@koa/bodyparser": "^5.1.1",
     "@koa/cors": "^5.0.0",
